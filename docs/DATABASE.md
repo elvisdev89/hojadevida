@@ -23,11 +23,12 @@ Todas las FK hacia `users` usan `ON DELETE CASCADE`.
 | Columna | Tipo | Restricciones |
 |---|---|---|
 | id | bigint unsigned | PK |
-| name | varchar(255) | Nombre para mostrar |
 | email | varchar(255) | UNIQUE. Única fuente del correo |
 | email_verified_at | timestamp | NULL. Viene con Laravel; no se usa mientras la verificación esté fuera de alcance |
 | password | varchar(255) | Hash bcrypt |
 | timestamps | | |
+
+Sin `name` (el nombre vive en `profiles`, una sola fuente) ni `remember_token` (solo sirve para login con sesión).
 
 ### profiles
 | Columna | Tipo | Restricciones |
@@ -135,7 +136,14 @@ Todas las FK hacia `users` usan `ON DELETE CASCADE`.
 | timestamps | | |
 
 ### Tablas de soporte (Laravel y Sanctum)
-`personal_access_tokens`, `cache`, `jobs`, `failed_jobs`.
+| Tabla | Uso |
+|---|---|
+| `migrations` | Registro de migraciones ejecutadas (la crea Laravel) |
+| `cache`, `cache_locks` | Caché (`CACHE_STORE=database`), necesaria para el rate limiting |
+| `jobs`, `job_batches`, `failed_jobs` | Colas (`QUEUE_CONNECTION=database`) |
+| `personal_access_tokens` | Tokens de Sanctum |
+
+Se eliminaron `sessions` (la API no usa sesión: `SESSION_DRIVER=array`) y `password_reset_tokens` (sin recuperación de contraseña).
 
 > `personal_access_tokens` es **polimórfica** (`tokenable_type`, `tokenable_id`) y **no tiene FK** hacia `users`. Al eliminar una cuenta, los tokens se borran explícitamente.
 

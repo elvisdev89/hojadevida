@@ -68,7 +68,7 @@ hojadevida/
 - Form Requests: `Store{Model}Request` y `Update{Model}Request`.
 - Resources: `{Model}Resource`.
 - Autorización de registros con **Policies**. El `user_id` nunca se toma del request.
-- Asignación masiva controlada con `$fillable`.
+- Asignación masiva controlada con el atributo `#[Fillable([...])]` (estilo de Laravel 13) y campos ocultos con `#[Hidden([...])]`.
 - Rutas en kebab-case y plural (`/api/v1/me/work-experiences`).
 - Códigos HTTP: 200 OK, 201 creado, 204 sin contenido, 401 no autenticado, 403 prohibido, 404 no encontrado, 422 validación, 429 demasiadas peticiones.
 
