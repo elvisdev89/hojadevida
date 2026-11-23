@@ -9,10 +9,10 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Estructura del monorepo y documentación inicial
 - [x] Verificación del entorno (PHP 8.3.36, MySQL 8.0.46)
 - [x] Configurar `php` de la CLI en la versión 8.3
-- [ ] Crear el repositorio en GitHub y hacer el primer commit
+- [x] Crear el repositorio en GitHub y hacer el primer commit
 
 ## Fase 2: Fundamentos de Laravel
-- [ ] Crear el proyecto Laravel 13 en `api/` con Pest
+- [x] Crear el proyecto Laravel 13 en `api/` con Pest
 - [ ] Configurar `.env` y las bases `hojadevida` y `hojadevida_test`
 - [ ] Instalar la API y Sanctum (`install:api`)
 - [ ] Hacer configurable la expiración del token (`SANCTUM_TOKEN_EXPIRATION`)
