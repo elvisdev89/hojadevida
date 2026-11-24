@@ -14,9 +14,10 @@ Leyenda: [x] hecho · [ ] pendiente
 ## Fase 2: Fundamentos de Laravel
 - [x] Crear el proyecto Laravel 13 en `api/` con Pest
 - [x] Configurar `.env` y las bases `hojadevida` y `hojadevida_test`
-- [ ] Instalar la API y Sanctum (`install:api`)
-- [ ] Hacer configurable la expiración del token (`SANCTUM_TOKEN_EXPIRATION`)
-- [ ] Crear los enums
+- [x] Adaptar las migraciones por defecto (sin `name`, `sessions` ni `password_reset_tokens`)
+- [x] Instalar la API y Sanctum (`install:api`)
+- [x] Hacer configurable la expiración del token (`SANCTUM_TOKEN_EXPIRATION`)
+- [x] Crear los enums
 - [ ] Crear las migraciones
 - [ ] Crear los modelos y las relaciones
 - [ ] Crear las factories y los seeders (catálogo de idiomas)

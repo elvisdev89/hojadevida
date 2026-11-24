@@ -149,9 +149,11 @@ Se eliminaron `sessions` (la API no usa sesión: `SESSION_DRIVER=array`) y `pass
 
 ## Enums
 
+Ubicados en `api/app/Enums`. En la BD se guarda el **valor** (columna derecha).
+
 | Enum | Valores |
 |---|---|
-| IdentificationType | `CC`, `CE`, `TI`, `PA`, `PPT` |
+| IdentificationType | `CC` (CitizenshipCard), `CE` (ForeignerId), `TI` (IdentityCard), `PA` (Passport), `PPT` (TemporaryProtectionPermit) |
 | EducationLevel | `high_school`, `technical`, `technologist`, `undergraduate`, `specialization`, `master`, `doctorate` |
 | ReferenceType | `personal`, `professional` |
 | SkillCategory | `technical`, `soft`, `tool`, `other` |

@@ -4,6 +4,7 @@
 - Formato: JSON (`Accept: application/json`)
 - Autenticación: `Authorization: Bearer {token}`
 - Idioma de mensajes y errores: inglés
+- Expiración de tokens: `SANCTUM_TOKEN_EXPIRATION` en minutos (por defecto 1440 = 24 h; `0` = no expira). Un token vencido responde `401`.
 
 > Borrador. Cada endpoint se documenta en detalle (request, response, errores) cuando se implementa.
 
