@@ -50,6 +50,8 @@ Sin `name` (el nombre vive en `profiles`, una sola fuente) ni `remember_token` (
 Índice: `UNIQUE(identification_type, identification_number)`.
 
 ### educations
+> Para el pluralizador de Laravel, *education* es incontable (`Str::plural('education') === 'education'`). El modelo `Education` debe declarar la tabla explícitamente (`$table = 'educations'`).
+
 | Columna | Tipo | Restricciones |
 |---|---|---|
 | id | bigint unsigned | PK |
