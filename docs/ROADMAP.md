@@ -18,8 +18,8 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Instalar la API y Sanctum (`install:api`)
 - [x] Hacer configurable la expiración del token (`SANCTUM_TOKEN_EXPIRATION`)
 - [x] Crear los enums
-- [ ] Crear las migraciones
-- [ ] Crear los modelos y las relaciones
+- [x] Crear las migraciones
+- [x] Crear los modelos y las relaciones
 - [ ] Crear las factories y los seeders (catálogo de idiomas)
 - [ ] Crear el primer endpoint: `GET /api/v1/languages`
 - [ ] Hacer que los errores se respondan en JSON
