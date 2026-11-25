@@ -20,7 +20,7 @@ class CourseFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => fake()->catchPhrase(),
+            'name' => ucfirst(fake()->words(3, true)),
             'institution' => fake()->company(),
             'completed_at' => fake()->dateTimeBetween('-5 years', '-1 month'),
             'expires_at' => null,

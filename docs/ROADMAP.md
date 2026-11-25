@@ -24,7 +24,7 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Crear los seeders (catálogo de idiomas y usuario demo)
 - [x] Crear el primer endpoint: `GET /api/v1/languages`
 - [x] Hacer que los errores se respondan en JSON
-- [ ] Configurar Pint y Larastan
+- [x] Configurar Pint y Larastan (nivel 5)
 
 ## Fase 3: Autenticación y usuarios
 - [ ] Registro

@@ -26,14 +26,33 @@ En cada endpoint se cubren como mínimo:
 3. Sin autenticación (401).
 4. **Acceso a recursos de otro usuario (403 o 404)**.
 
-## Comandos
+## Organización actual
 
-> Se completan en la Fase 2.
+| Carpeta | Contenido |
+|---|---|
+| `tests/Feature/Database` | Integridad de datos (FK, cascadas, índices únicos) y seeders |
+| `tests/Feature/Api/V1` | Endpoints, un archivo por recurso |
+
+`tests/Pest.php` aplica `TestCase` y `RefreshDatabase` a todo `tests/Feature`.
+
+## Comandos
 
 ```bash
 cd api
-php artisan test            # todas las pruebas
-php artisan test --filter=Register
-./vendor/bin/pint           # formatear el código
-./vendor/bin/phpstan analyse
+composer test                          # todas las pruebas
+php8.3 artisan test --filter=Language  # solo las que coinciden con el nombre
+composer lint                          # Pint: corrige el formato
+composer analyse                       # Larastan (configuración en phpstan.neon)
 ```
+
+Antes de cada commit: `composer lint && composer analyse && composer test`.
+
+## Larastan
+
+- Configuración: `api/phpstan.neon`, **nivel 5**. Analiza `app`, `database` y `routes`. `tests/` queda fuera, porque Pest usa `$this` dentro de closures.
+- No se silencian errores con `@phpstan-ignore` ni con un *baseline*: se corrige la causa.
+- Ayuda a Larastan: PHPDoc genérico en las relaciones (`@return HasMany<Skill, $this>`), `@mixin Model` en los Resources y `@extends Factory<Model>` en las factories.
+
+## Rendimiento (entorno local)
+
+Con disco HDD, `RefreshDatabase` tarda unos 25 s en recrear el esquema. MySQL de desarrollo usa `/etc/mysql/mysql.conf.d/zz-development.cnf` (`innodb_flush_log_at_trx_commit = 2`, sin binlog) para bajar de 69 s a 25 s. **Nunca usar esa configuración en producción.**
