@@ -22,8 +22,8 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Crear los modelos y las relaciones
 - [x] Crear las factories y las pruebas de integridad de datos
 - [x] Crear los seeders (catálogo de idiomas y usuario demo)
-- [ ] Crear el primer endpoint: `GET /api/v1/languages`
-- [ ] Hacer que los errores se respondan en JSON
+- [x] Crear el primer endpoint: `GET /api/v1/languages`
+- [x] Hacer que los errores se respondan en JSON
 - [ ] Configurar Pint y Larastan
 
 ## Fase 3: Autenticación y usuarios
