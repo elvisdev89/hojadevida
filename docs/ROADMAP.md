@@ -29,8 +29,8 @@ Leyenda: [x] hecho · [ ] pendiente
 ## Fase 3: Autenticación y usuarios
 - [x] Registro
 - [x] Login y logout
-- [ ] `GET /me`
-- [ ] Cambio de contraseña
+- [x] `GET /me`
+- [x] Cambio de contraseña (revoca los demás tokens)
 - [ ] Eliminación de la cuenta y de todos sus datos
 - [ ] Rate limiting
 

@@ -31,8 +31,8 @@ Leyenda de **Auth**: — público · 🔑 token
 | POST | `/auth/register` | — | Registro ✅ |
 | POST | `/auth/login` | — | Devuelve un token ✅ |
 | POST | `/auth/logout` | 🔑 | Revoca el token actual ✅ |
-| GET | `/me` | 🔑 | Usuario autenticado |
-| PUT | `/me/password` | 🔑 | Cambia la contraseña (pide la actual) |
+| GET | `/me` | 🔑 | Usuario autenticado ✅ |
+| PUT | `/me/password` | 🔑 | Cambia la contraseña (pide la actual) ✅ |
 | DELETE | `/me` | 🔑 | Elimina la cuenta y todos sus datos (pide la contraseña) |
 
 ### Hoja de vida
@@ -104,6 +104,34 @@ Revoca **solo** el token con el que se hizo la petición. Los tokens de otros di
 **204 No Content**
 
 **401**: token ausente, inválido, revocado o expirado.
+
+### `GET /me` 🔑
+
+Devuelve el usuario dueño del token.
+
+**200 OK**
+```json
+{ "data": { "id": 1, "email": "ana@example.com", "created_at": "2026-11-25T17:00:00.000000Z" } }
+```
+
+**401**: sin token válido.
+
+### `PUT /me/password` 🔑
+
+Cambia la contraseña. **Revoca todos los demás tokens del usuario** y mantiene el de la petición actual: si alguien robó la contraseña, queda desconectado.
+
+**Body**
+| Campo | Reglas |
+|---|---|
+| `current_password` | Obligatorio, debe coincidir con la contraseña actual |
+| `password` | Obligatorio, `Password::defaults()` y distinta de la actual |
+| `password_confirmation` | Debe coincidir con `password` |
+
+**204 No Content**
+
+**422**: contraseña actual incorrecta, o nueva contraseña inválida o igual a la actual.
+
+**401**: sin token válido.
 
 ### `GET /languages`
 
