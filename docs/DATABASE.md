@@ -178,3 +178,18 @@ Ubicados en `api/app/Enums`. En la BD se guarda el **valor** (columna derecha).
 | Un documento de identidad no se repite | Índice UNIQUE + Form Request |
 
 Regla general: la **BD garantiza la integridad** (FK, UNIQUE, NOT NULL) y el **Form Request da mensajes claros** al cliente.
+
+## Seeders
+
+| Seeder | Contenido | Entornos |
+|---|---|---|
+| `LanguageSeeder` | Catálogo de idiomas. Idempotente (`upsert` por `code`) | Todos, incluido producción |
+| `DemoUserSeeder` | `demo@example.com` / `password` con una hoja de vida completa. No hace nada si el usuario ya existe | Solo `local` |
+
+`DatabaseSeeder` decide qué se ejecuta según `APP_ENV`. Para agregar un idioma, edita `LanguageSeeder` y vuelve a ejecutarlo; no duplica registros.
+
+```bash
+php8.3 artisan db:seed                          # sembrar
+php8.3 artisan migrate:fresh --seed             # recrear la BD local desde cero
+php8.3 artisan db:seed --class=LanguageSeeder   # solo el catálogo (producción)
+```
