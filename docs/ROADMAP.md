@@ -20,7 +20,8 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Crear los enums
 - [x] Crear las migraciones
 - [x] Crear los modelos y las relaciones
-- [ ] Crear las factories y los seeders (catálogo de idiomas)
+- [x] Crear las factories y las pruebas de integridad de datos
+- [ ] Crear los seeders (catálogo de idiomas y usuario demo)
 - [ ] Crear el primer endpoint: `GET /api/v1/languages`
 - [ ] Hacer que los errores se respondan en JSON
 - [ ] Configurar Pint y Larastan
