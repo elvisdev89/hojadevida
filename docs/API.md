@@ -29,8 +29,8 @@ Leyenda de **Auth**: — público · 🔑 token
 | Método | Ruta | Auth | Descripción |
 |---|---|---|---|
 | POST | `/auth/register` | — | Registro ✅ |
-| POST | `/auth/login` | — | Devuelve un token |
-| POST | `/auth/logout` | 🔑 | Revoca el token actual |
+| POST | `/auth/login` | — | Devuelve un token ✅ |
+| POST | `/auth/logout` | 🔑 | Revoca el token actual ✅ |
 | GET | `/me` | 🔑 | Usuario autenticado |
 | PUT | `/me/password` | 🔑 | Cambia la contraseña (pide la actual) |
 | DELETE | `/me` | 🔑 | Elimina la cuenta y todos sus datos (pide la contraseña) |
@@ -80,6 +80,30 @@ Crea una cuenta y devuelve un token, así que el usuario queda autenticado sin u
 ```
 
 **422**: datos inválidos o email ya registrado (sin importar mayúsculas).
+
+### `POST /auth/login`
+
+Intercambia credenciales por un token nuevo. Cada login crea un token distinto (uno por dispositivo).
+
+**Body**: `email` (obligatorio, email válido) y `password` (obligatorio). La política de contraseñas no se aplica aquí.
+
+**200 OK**: la misma forma que `/auth/register`.
+
+**422**: datos inválidos o credenciales incorrectas. Para credenciales incorrectas el mensaje es siempre el mismo y no revela si el email existe:
+```json
+{
+  "message": "These credentials do not match our records.",
+  "errors": { "email": ["These credentials do not match our records."] }
+}
+```
+
+### `POST /auth/logout` 🔑
+
+Revoca **solo** el token con el que se hizo la petición. Los tokens de otros dispositivos siguen activos.
+
+**204 No Content**
+
+**401**: token ausente, inválido, revocado o expirado.
 
 ### `GET /languages`
 

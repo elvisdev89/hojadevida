@@ -28,7 +28,7 @@ Leyenda: [x] hecho · [ ] pendiente
 
 ## Fase 3: Autenticación y usuarios
 - [x] Registro
-- [ ] Login y logout
+- [x] Login y logout
 - [ ] `GET /me`
 - [ ] Cambio de contraseña
 - [ ] Eliminación de la cuenta y de todos sus datos
