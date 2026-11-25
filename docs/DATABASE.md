@@ -23,11 +23,12 @@ Todas las FK hacia `users` usan `ON DELETE CASCADE`.
 | Columna | Tipo | Restricciones |
 |---|---|---|
 | id | bigint unsigned | PK |
-| name | varchar(255) | Nombre para mostrar |
 | email | varchar(255) | UNIQUE. Única fuente del correo |
 | email_verified_at | timestamp | NULL. Viene con Laravel; no se usa mientras la verificación esté fuera de alcance |
 | password | varchar(255) | Hash bcrypt |
 | timestamps | | |
+
+Sin `name` (el nombre vive en `profiles`, una sola fuente) ni `remember_token` (solo sirve para login con sesión).
 
 ### profiles
 | Columna | Tipo | Restricciones |
@@ -49,6 +50,8 @@ Todas las FK hacia `users` usan `ON DELETE CASCADE`.
 Índice: `UNIQUE(identification_type, identification_number)`.
 
 ### educations
+> Para el pluralizador de Laravel, *education* es incontable (`Str::plural('education') === 'education'`). El modelo `Education` debe declarar la tabla explícitamente (`$table = 'educations'`).
+
 | Columna | Tipo | Restricciones |
 |---|---|---|
 | id | bigint unsigned | PK |
@@ -135,15 +138,24 @@ Todas las FK hacia `users` usan `ON DELETE CASCADE`.
 | timestamps | | |
 
 ### Tablas de soporte (Laravel y Sanctum)
-`personal_access_tokens`, `cache`, `jobs`, `failed_jobs`.
+| Tabla | Uso |
+|---|---|
+| `migrations` | Registro de migraciones ejecutadas (la crea Laravel) |
+| `cache`, `cache_locks` | Caché (`CACHE_STORE=database`), necesaria para el rate limiting |
+| `jobs`, `job_batches`, `failed_jobs` | Colas (`QUEUE_CONNECTION=database`) |
+| `personal_access_tokens` | Tokens de Sanctum |
+
+Se eliminaron `sessions` (la API no usa sesión: `SESSION_DRIVER=array`) y `password_reset_tokens` (sin recuperación de contraseña).
 
 > `personal_access_tokens` es **polimórfica** (`tokenable_type`, `tokenable_id`) y **no tiene FK** hacia `users`. Al eliminar una cuenta, los tokens se borran explícitamente.
 
 ## Enums
 
+Ubicados en `api/app/Enums`. En la BD se guarda el **valor** (columna derecha).
+
 | Enum | Valores |
 |---|---|
-| IdentificationType | `CC`, `CE`, `TI`, `PA`, `PPT` |
+| IdentificationType | `CC` (CitizenshipCard), `CE` (ForeignerId), `TI` (IdentityCard), `PA` (Passport), `PPT` (TemporaryProtectionPermit) |
 | EducationLevel | `high_school`, `technical`, `technologist`, `undergraduate`, `specialization`, `master`, `doctorate` |
 | ReferenceType | `personal`, `professional` |
 | SkillCategory | `technical`, `soft`, `tool`, `other` |
@@ -166,3 +178,18 @@ Todas las FK hacia `users` usan `ON DELETE CASCADE`.
 | Un documento de identidad no se repite | Índice UNIQUE + Form Request |
 
 Regla general: la **BD garantiza la integridad** (FK, UNIQUE, NOT NULL) y el **Form Request da mensajes claros** al cliente.
+
+## Seeders
+
+| Seeder | Contenido | Entornos |
+|---|---|---|
+| `LanguageSeeder` | Catálogo de idiomas. Idempotente (`upsert` por `code`) | Todos, incluido producción |
+| `DemoUserSeeder` | `demo@example.com` / `password` con una hoja de vida completa. No hace nada si el usuario ya existe | Solo `local` |
+
+`DatabaseSeeder` decide qué se ejecuta según `APP_ENV`. Para agregar un idioma, edita `LanguageSeeder` y vuelve a ejecutarlo; no duplica registros.
+
+```bash
+php8.3 artisan db:seed                          # sembrar
+php8.3 artisan migrate:fresh --seed             # recrear la BD local desde cero
+php8.3 artisan db:seed --class=LanguageSeeder   # solo el catálogo (producción)
+```

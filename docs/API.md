@@ -4,6 +4,7 @@
 - Formato: JSON (`Accept: application/json`)
 - Autenticación: `Authorization: Bearer {token}`
 - Idioma de mensajes y errores: inglés
+- Expiración de tokens: `SANCTUM_TOKEN_EXPIRATION` en minutos (por defecto 1440 = 24 h; `0` = no expira). Un token vencido responde `401`.
 
 > Borrador. Cada endpoint se documenta en detalle (request, response, errores) cuando se implementa.
 
@@ -45,10 +46,28 @@ Leyenda de **Auth**: — público · 🔑 token
 | CRUD | `/me/skills` | 🔑 | Habilidades |
 | CRUD | `/me/courses` | 🔑 | Cursos y certificaciones |
 | GET | `/me/courses/{course}/certificate` | 🔑 | Descarga el certificado adjunto |
-| GET | `/languages` | 🔑 | Catálogo de idiomas |
+| GET | `/languages` | — | Catálogo de idiomas ✅ |
 | GET / POST | `/me/languages` | 🔑 | Listar y agregar idiomas |
 | PUT / DELETE | `/me/languages/{language}` | 🔑 | Editar y quitar un idioma |
 | GET | `/me/cv` | 🔑 | Hoja de vida consolidada |
 | GET | `/me/cv/pdf` | 🔑 | Descarga en PDF |
 
 CRUD = `GET` (listar), `POST` (crear), `GET /{id}`, `PUT /{id}`, `DELETE /{id}`.
+
+✅ = implementado.
+
+## Endpoints implementados
+
+### `GET /languages`
+
+Catálogo de idiomas ordenado por `name`. Público y sin paginación.
+
+**200 OK**
+```json
+{
+  "data": [
+    { "id": 1, "code": "en", "name": "English" },
+    { "id": 2, "code": "es", "name": "Spanish" }
+  ]
+}
+```

@@ -9,20 +9,22 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Estructura del monorepo y documentación inicial
 - [x] Verificación del entorno (PHP 8.3.36, MySQL 8.0.46)
 - [x] Configurar `php` de la CLI en la versión 8.3
-- [ ] Crear el repositorio en GitHub y hacer el primer commit
+- [x] Crear el repositorio en GitHub y hacer el primer commit
 
 ## Fase 2: Fundamentos de Laravel
-- [ ] Crear el proyecto Laravel 13 en `api/` con Pest
-- [ ] Configurar `.env` y las bases `hojadevida` y `hojadevida_test`
-- [ ] Instalar la API y Sanctum (`install:api`)
-- [ ] Hacer configurable la expiración del token (`SANCTUM_TOKEN_EXPIRATION`)
-- [ ] Crear los enums
-- [ ] Crear las migraciones
-- [ ] Crear los modelos y las relaciones
-- [ ] Crear las factories y los seeders (catálogo de idiomas)
-- [ ] Crear el primer endpoint: `GET /api/v1/languages`
-- [ ] Hacer que los errores se respondan en JSON
-- [ ] Configurar Pint y Larastan
+- [x] Crear el proyecto Laravel 13 en `api/` con Pest
+- [x] Configurar `.env` y las bases `hojadevida` y `hojadevida_test`
+- [x] Adaptar las migraciones por defecto (sin `name`, `sessions` ni `password_reset_tokens`)
+- [x] Instalar la API y Sanctum (`install:api`)
+- [x] Hacer configurable la expiración del token (`SANCTUM_TOKEN_EXPIRATION`)
+- [x] Crear los enums
+- [x] Crear las migraciones
+- [x] Crear los modelos y las relaciones
+- [x] Crear las factories y las pruebas de integridad de datos
+- [x] Crear los seeders (catálogo de idiomas y usuario demo)
+- [x] Crear el primer endpoint: `GET /api/v1/languages`
+- [x] Hacer que los errores se respondan en JSON
+- [x] Configurar Pint y Larastan (nivel 5)
 
 ## Fase 3: Autenticación y usuarios
 - [ ] Registro
