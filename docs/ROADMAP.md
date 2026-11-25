@@ -27,7 +27,7 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Configurar Pint y Larastan (nivel 5)
 
 ## Fase 3: Autenticación y usuarios
-- [ ] Registro
+- [x] Registro
 - [ ] Login y logout
 - [ ] `GET /me`
 - [ ] Cambio de contraseña

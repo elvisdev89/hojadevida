@@ -28,7 +28,7 @@ Leyenda de **Auth**: — público · 🔑 token
 ### Autenticación y cuenta
 | Método | Ruta | Auth | Descripción |
 |---|---|---|---|
-| POST | `/auth/register` | — | Registro |
+| POST | `/auth/register` | — | Registro ✅ |
 | POST | `/auth/login` | — | Devuelve un token |
 | POST | `/auth/logout` | 🔑 | Revoca el token actual |
 | GET | `/me` | 🔑 | Usuario autenticado |
@@ -57,6 +57,29 @@ CRUD = `GET` (listar), `POST` (crear), `GET /{id}`, `PUT /{id}`, `DELETE /{id}`.
 ✅ = implementado.
 
 ## Endpoints implementados
+
+### `POST /auth/register`
+
+Crea una cuenta y devuelve un token, así que el usuario queda autenticado sin un login adicional.
+
+**Body**
+| Campo | Reglas |
+|---|---|
+| `email` | Obligatorio, email válido, máx. 255, único. Se guarda sin espacios y en minúsculas |
+| `password` | Obligatorio, 8 a 72 caracteres, con letras y números (`Password::defaults()` en `AppServiceProvider`) |
+| `password_confirmation` | Debe coincidir con `password` |
+
+**201 Created**
+```json
+{
+  "data": {
+    "token": "1|Xk9...",
+    "user": { "id": 1, "email": "ana@example.com", "created_at": "2026-11-25T17:00:00.000000Z" }
+  }
+}
+```
+
+**422**: datos inválidos o email ya registrado (sin importar mayúsculas).
 
 ### `GET /languages`
 
