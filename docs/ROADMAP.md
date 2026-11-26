@@ -32,7 +32,7 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] `GET /me`
 - [x] Cambio de contraseña (revoca los demás tokens)
 - [x] Eliminación de la cuenta y de todos sus datos (los archivos se agregan en la Fase 5)
-- [ ] Rate limiting
+- [x] Rate limiting (`api`, `login`, `register`)
 
 ## Fase 4: Gestión de la hoja de vida
 - [ ] Información personal

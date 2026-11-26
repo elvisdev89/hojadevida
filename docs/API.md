@@ -21,6 +21,23 @@
 { "message": "Unauthenticated." }
 ```
 
+## Límites de peticiones (rate limiting)
+
+Definidos en `AppServiceProvider::configureRateLimiting()`. Al superarlos, la API responde **429** con el header `Retry-After` (segundos de espera).
+
+| Limitador | Rutas | Límite | Se cuenta por |
+|---|---|---|---|
+| `api` | Todas | 60/min | Usuario autenticado, o IP si es invitado |
+| `login` | `POST /auth/login` | 5/min | Email (sin mayúsculas ni espacios) + IP |
+| `register` | `POST /auth/register` | 5/min | IP |
+
+Los límites se suman: un login cuenta para `login` y para `api`.
+
+```json
+// 429
+{ "message": "Too Many Attempts." }
+```
+
 ## Endpoints planeados
 
 Leyenda de **Auth**: — público · 🔑 token

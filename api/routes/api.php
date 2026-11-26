@@ -7,8 +7,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('v1.')->group(function () {
     // Public routes
-    Route::post('auth/register', [AuthController::class, 'register'])->name('auth.register');
-    Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::post('auth/register', [AuthController::class, 'register'])
+        ->middleware('throttle:register')
+        ->name('auth.register');
+    Route::post('auth/login', [AuthController::class, 'login'])
+        ->middleware('throttle:login')
+        ->name('auth.login');
 
     Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
 

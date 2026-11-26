@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // API only: never redirect unauthenticated users to a login page.
         $middleware->redirectGuestsTo(fn () => null);
+
+        // Apply the "api" rate limiter (AppServiceProvider) to every API route.
+        $middleware->throttleApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
