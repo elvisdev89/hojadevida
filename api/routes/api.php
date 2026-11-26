@@ -17,6 +17,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
         Route::get('me', [AccountController::class, 'show'])->name('me.show');
+        Route::delete('me', [AccountController::class, 'destroy'])->name('me.destroy');
         Route::put('me/password', [AccountController::class, 'updatePassword'])->name('me.password.update');
     });
 });

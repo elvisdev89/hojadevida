@@ -33,7 +33,7 @@ Leyenda de **Auth**: — público · 🔑 token
 | POST | `/auth/logout` | 🔑 | Revoca el token actual ✅ |
 | GET | `/me` | 🔑 | Usuario autenticado ✅ |
 | PUT | `/me/password` | 🔑 | Cambia la contraseña (pide la actual) ✅ |
-| DELETE | `/me` | 🔑 | Elimina la cuenta y todos sus datos (pide la contraseña) |
+| DELETE | `/me` | 🔑 | Elimina la cuenta y todos sus datos (pide la contraseña) ✅ |
 
 ### Hoja de vida
 | Método | Ruta | Auth | Descripción |
@@ -130,6 +130,18 @@ Cambia la contraseña. **Revoca todos los demás tokens del usuario** y mantiene
 **204 No Content**
 
 **422**: contraseña actual incorrecta, o nueva contraseña inválida o igual a la actual.
+
+**401**: sin token válido.
+
+### `DELETE /me` 🔑
+
+Elimina **de forma irreversible** la cuenta, toda la hoja de vida y todos los tokens del usuario, dentro de una transacción. Los idiomas del catálogo no se tocan.
+
+**Body**: `password` (obligatorio, debe ser la contraseña actual).
+
+**204 No Content**
+
+**422**: contraseña ausente o incorrecta. No se borra nada.
 
 **401**: sin token válido.
 
