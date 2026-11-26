@@ -21,6 +21,23 @@
 { "message": "Unauthenticated." }
 ```
 
+## Límites de peticiones (rate limiting)
+
+Definidos en `AppServiceProvider::configureRateLimiting()`. Al superarlos, la API responde **429** con el header `Retry-After` (segundos de espera).
+
+| Limitador | Rutas | Límite | Se cuenta por |
+|---|---|---|---|
+| `api` | Todas | 60/min | Usuario autenticado, o IP si es invitado |
+| `login` | `POST /auth/login` | 5/min | Email (sin mayúsculas ni espacios) + IP |
+| `register` | `POST /auth/register` | 5/min | IP |
+
+Los límites se suman: un login cuenta para `login` y para `api`.
+
+```json
+// 429
+{ "message": "Too Many Attempts." }
+```
+
 ## Endpoints planeados
 
 Leyenda de **Auth**: — público · 🔑 token
@@ -28,12 +45,12 @@ Leyenda de **Auth**: — público · 🔑 token
 ### Autenticación y cuenta
 | Método | Ruta | Auth | Descripción |
 |---|---|---|---|
-| POST | `/auth/register` | — | Registro |
-| POST | `/auth/login` | — | Devuelve un token |
-| POST | `/auth/logout` | 🔑 | Revoca el token actual |
-| GET | `/me` | 🔑 | Usuario autenticado |
-| PUT | `/me/password` | 🔑 | Cambia la contraseña (pide la actual) |
-| DELETE | `/me` | 🔑 | Elimina la cuenta y todos sus datos (pide la contraseña) |
+| POST | `/auth/register` | — | Registro ✅ |
+| POST | `/auth/login` | — | Devuelve un token ✅ |
+| POST | `/auth/logout` | 🔑 | Revoca el token actual ✅ |
+| GET | `/me` | 🔑 | Usuario autenticado ✅ |
+| PUT | `/me/password` | 🔑 | Cambia la contraseña (pide la actual) ✅ |
+| DELETE | `/me` | 🔑 | Elimina la cuenta y todos sus datos (pide la contraseña) ✅ |
 
 ### Hoja de vida
 | Método | Ruta | Auth | Descripción |
@@ -57,6 +74,93 @@ CRUD = `GET` (listar), `POST` (crear), `GET /{id}`, `PUT /{id}`, `DELETE /{id}`.
 ✅ = implementado.
 
 ## Endpoints implementados
+
+### `POST /auth/register`
+
+Crea una cuenta y devuelve un token, así que el usuario queda autenticado sin un login adicional.
+
+**Body**
+| Campo | Reglas |
+|---|---|
+| `email` | Obligatorio, email válido, máx. 255, único. Se guarda sin espacios y en minúsculas |
+| `password` | Obligatorio, 8 a 72 caracteres, con letras y números (`Password::defaults()` en `AppServiceProvider`) |
+| `password_confirmation` | Debe coincidir con `password` |
+
+**201 Created**
+```json
+{
+  "data": {
+    "token": "1|Xk9...",
+    "user": { "id": 1, "email": "ana@example.com", "created_at": "2026-11-25T17:00:00.000000Z" }
+  }
+}
+```
+
+**422**: datos inválidos o email ya registrado (sin importar mayúsculas).
+
+### `POST /auth/login`
+
+Intercambia credenciales por un token nuevo. Cada login crea un token distinto (uno por dispositivo).
+
+**Body**: `email` (obligatorio, email válido) y `password` (obligatorio). La política de contraseñas no se aplica aquí.
+
+**200 OK**: la misma forma que `/auth/register`.
+
+**422**: datos inválidos o credenciales incorrectas. Para credenciales incorrectas el mensaje es siempre el mismo y no revela si el email existe:
+```json
+{
+  "message": "These credentials do not match our records.",
+  "errors": { "email": ["These credentials do not match our records."] }
+}
+```
+
+### `POST /auth/logout` 🔑
+
+Revoca **solo** el token con el que se hizo la petición. Los tokens de otros dispositivos siguen activos.
+
+**204 No Content**
+
+**401**: token ausente, inválido, revocado o expirado.
+
+### `GET /me` 🔑
+
+Devuelve el usuario dueño del token.
+
+**200 OK**
+```json
+{ "data": { "id": 1, "email": "ana@example.com", "created_at": "2026-11-25T17:00:00.000000Z" } }
+```
+
+**401**: sin token válido.
+
+### `PUT /me/password` 🔑
+
+Cambia la contraseña. **Revoca todos los demás tokens del usuario** y mantiene el de la petición actual: si alguien robó la contraseña, queda desconectado.
+
+**Body**
+| Campo | Reglas |
+|---|---|
+| `current_password` | Obligatorio, debe coincidir con la contraseña actual |
+| `password` | Obligatorio, `Password::defaults()` y distinta de la actual |
+| `password_confirmation` | Debe coincidir con `password` |
+
+**204 No Content**
+
+**422**: contraseña actual incorrecta, o nueva contraseña inválida o igual a la actual.
+
+**401**: sin token válido.
+
+### `DELETE /me` 🔑
+
+Elimina **de forma irreversible** la cuenta, toda la hoja de vida y todos los tokens del usuario, dentro de una transacción. Los idiomas del catálogo no se tocan.
+
+**Body**: `password` (obligatorio, debe ser la contraseña actual).
+
+**204 No Content**
+
+**422**: contraseña ausente o incorrecta. No se borra nada.
+
+**401**: sin token válido.
 
 ### `GET /languages`
 

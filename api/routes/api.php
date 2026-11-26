@@ -1,8 +1,27 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AccountController;
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('v1.')->group(function () {
+    // Public routes
+    Route::post('auth/register', [AuthController::class, 'register'])
+        ->middleware('throttle:register')
+        ->name('auth.register');
+    Route::post('auth/login', [AuthController::class, 'login'])
+        ->middleware('throttle:login')
+        ->name('auth.login');
+
     Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
+
+    // Routes that require a valid Bearer token
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+        Route::get('me', [AccountController::class, 'show'])->name('me.show');
+        Route::delete('me', [AccountController::class, 'destroy'])->name('me.destroy');
+        Route::put('me/password', [AccountController::class, 'updatePassword'])->name('me.password.update');
+    });
 });

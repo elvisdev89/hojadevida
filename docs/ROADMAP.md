@@ -27,12 +27,12 @@ Leyenda: [x] hecho · [ ] pendiente
 - [x] Configurar Pint y Larastan (nivel 5)
 
 ## Fase 3: Autenticación y usuarios
-- [ ] Registro
-- [ ] Login y logout
-- [ ] `GET /me`
-- [ ] Cambio de contraseña
-- [ ] Eliminación de la cuenta y de todos sus datos
-- [ ] Rate limiting
+- [x] Registro
+- [x] Login y logout
+- [x] `GET /me`
+- [x] Cambio de contraseña (revoca los demás tokens)
+- [x] Eliminación de la cuenta y de todos sus datos (los archivos se agregan en la Fase 5)
+- [x] Rate limiting (`api`, `login`, `register`)
 
 ## Fase 4: Gestión de la hoja de vida
 - [ ] Información personal
@@ -47,6 +47,7 @@ Leyenda: [x] hecho · [ ] pendiente
 ## Fase 5: Documentos
 - [ ] Foto de perfil
 - [ ] Certificados adjuntos (disco privado)
+- [ ] Borrar la foto y los certificados al eliminar la cuenta (`DELETE /me`)
 - [ ] Plantilla Blade del CV
 - [ ] Generación y descarga del PDF (dompdf)
 
